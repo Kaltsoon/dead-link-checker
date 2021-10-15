@@ -1,0 +1,34 @@
+import os
+import click
+from scraper import Scraper
+from loggers.console_logger import ConsoleLogger
+from reporters.file_reporter import FileReporter
+
+dirname = os.path.dirname(__file__)
+
+
+@click.command()
+@click.option('--url', help='The URL of the page where the scraping starts')
+@click.option('--max-depth', default=10, help='Maximum depth of pages to scrape')
+@click.option('--report-file', default='report.json', help='File where the report will be written in JSON format')
+def scrape(url, max_depth, report_file):
+    logger = ConsoleLogger()
+    report_path = os.path.join(dirname, '..', 'data', report_file)
+
+    scraper = Scraper(
+        url=url,
+        max_depth=max_depth,
+        logger=logger
+    )
+
+    reporter = FileReporter(report_path)
+
+    logger.info(f'Starting the scraping at {url}...')
+
+    reporter.produce_report(scraper)
+
+    logger.success(f'Scraping is done! Report can be found in {report_path}')
+
+
+if __name__ == '__main__':
+    scrape()
