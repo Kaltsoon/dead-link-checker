@@ -1,12 +1,6 @@
 from pyquery import PyQuery
-from urllib.parse import urlparse
 from entities.link import Link
-
-
-def get_base_url(url):
-    uri = urlparse(url)
-
-    return f'{uri.scheme}://{uri.netloc}'
+from utils import get_base_url
 
 
 class Page:

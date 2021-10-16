@@ -1,6 +1,6 @@
 import re
-import requests
 from pyquery import PyQuery
+from utils import url_is_broken
 
 
 class Link:
@@ -45,9 +45,7 @@ class Link:
         if url is None:
             return False
 
-        respose = requests.get(url, timeout=10)
-
-        return respose.status_code != requests.codes.ok
+        return url_is_broken(url)
 
     def __str__(self):
         return self.html

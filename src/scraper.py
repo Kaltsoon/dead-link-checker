@@ -1,9 +1,6 @@
 from loggers.nop_logger import NopLogger
 from entities.page import Page
-
-
-def get_url_without_fragment(url):
-    return url.split('#')[0]
+from utils import get_url_without_fragment
 
 
 class Scraper:
@@ -14,7 +11,9 @@ class Scraper:
         self._logger = logger
 
     def get_broken_links(self):
-        return self._scrape_page(Page(self.url))
+        normalized_url = get_url_without_fragment(self.url)
+
+        return self._scrape_page(Page(normalized_url))
 
     def _url_is_visited(self, url):
         normalized_url = get_url_without_fragment(url)
@@ -53,7 +52,9 @@ class Scraper:
 
         for link in links:
             if self._should_scrape_link(link):
+                normalized_url = get_url_without_fragment(link.url)
+
                 broken_links = broken_links + \
-                    self._scrape_page(Page(link.url), depth + 1)
+                    self._scrape_page(Page(normalized_url), depth + 1)
 
         return broken_links
