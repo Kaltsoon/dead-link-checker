@@ -1,10 +1,13 @@
 import os
+from pathlib import Path
 import click
 from scraper import Scraper
 from loggers.console_logger import ConsoleLogger
 from reporters.file_reporter import FileReporter
 
 dirname = os.path.dirname(__file__)
+
+DATA_PATH = os.path.join(dirname, '..', 'data')
 
 
 @click.command()
@@ -13,7 +16,8 @@ dirname = os.path.dirname(__file__)
 @click.option('--report-file', default='report.json', help='File where the report will be written in JSON format')
 def scrape(url, max_depth, report_file):
     logger = ConsoleLogger()
-    report_path = os.path.join(dirname, '..', 'data', report_file)
+
+    report_path = Path(os.path.join(DATA_PATH, report_file)).resolve()
 
     scraper = Scraper(
         url=url,
