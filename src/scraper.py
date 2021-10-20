@@ -4,7 +4,7 @@ from utils import get_url_without_fragment
 
 
 class Scraper:
-    def __init__(self, url, logger=NopLogger(), max_depth=5):
+    def __init__(self, url, logger=NopLogger(), max_depth=10):
         self.url = url
         self._visited = {}
         self._max_depth = max_depth
@@ -37,7 +37,7 @@ class Scraper:
         links = page.links
 
         for link in links:
-            if link.url is not None and link.is_broken():
+            if link.is_broken():
                 broken_links.append(link)
 
         if broken_links:
