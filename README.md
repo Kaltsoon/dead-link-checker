@@ -1,6 +1,6 @@
-# Dead Link Checker
+# ⚰️ Dead Link Checker
 
-A dead simple way (pun intended) to recursively look for dead links on a web page. Link is considered dead if its URL responds with an HTTP error status code (4xx or 5xx).
+A dead simple way (pun intended) to recursively look for dead links on a web page. Link is considered dead if its URL responds with an HTTP error status code (4xx or 5xx) or sends no response.
 
 ## Requirements
 
