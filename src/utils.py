@@ -15,9 +15,9 @@ def get_url_fragment(url):
     return parts[1] if len(parts) > 1 else None
 
 
-def html_has_element_with_id(html, id):
+def html_has_fragment_target(html, fragment):
     query = PyQuery(html)
-    normalized_id = unquote(id)
+    normalized_id = unquote(fragment)
 
     return len(query(f'#{normalized_id},[href="#{normalized_id}"]')) > 0
 
@@ -49,4 +49,4 @@ def url_is_broken(url):
     if fragment is None or fragment.startswith('/'):
         return False
 
-    return not html_has_element_with_id(response.text, fragment)
+    return not html_has_fragment_target(response.text, fragment)
