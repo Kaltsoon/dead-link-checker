@@ -1,7 +1,8 @@
 import json
+from reporters.reporter import Reporter
 
 
-class FileReporter:
+class FileReporter(Reporter):
     def __init__(self, path):
         self.path = path
 
@@ -14,6 +15,5 @@ class FileReporter:
             link_dict[link.page.url] = link_dict.get(link.page.url) or []
             link_dict[link.page.url].append(link.html)
 
-        file = open(self.path, 'w')
-        file.write(json.dumps(link_dict, indent=2))
-        file.close()
+        with open(self.path, 'w') as file:
+            file.write(json.dumps(link_dict, indent=2))
