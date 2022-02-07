@@ -4,6 +4,12 @@ from entities.page import Page
 from utils import get_url_without_fragment
 
 
+async def get_broken_status(links):
+    results = await asyncio.gather(*[link.is_broken() for link in links], return_exceptions=True)
+
+    return results
+
+
 class Scraper:
     def __init__(self, url, logger=NopLogger(), max_depth=10):
         self.url = url
@@ -37,11 +43,7 @@ class Scraper:
         broken_links = []
         links = page.links
 
-        loop = asyncio.get_event_loop()
-
-        futures = asyncio.gather(*[link.is_broken() for link in links], return_exceptions=True)
-
-        results = loop.run_until_complete(futures)
+        results = asyncio.run(get_broken_status(links))
 
         for link, is_broken in zip(links, results):
             if is_broken:

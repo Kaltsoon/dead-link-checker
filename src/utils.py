@@ -18,7 +18,10 @@ def html_has_fragment_target(html, fragment):
     query = PyQuery(html)
     normalized_id = unquote(fragment)
 
-    return len(query(f'#{normalized_id},[href="#{normalized_id}"]')) > 0
+    selectors = [f'#{target},[href="#{target}"]' for target in [fragment, normalized_id]]
+    selector = ','.join(selectors)
+
+    return len(query(selector)) > 0
 
 
 def get_base_url(url):
