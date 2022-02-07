@@ -1,3 +1,4 @@
+import asyncio
 from loggers.nop_logger import NopLogger
 from entities.page import Page
 from utils import get_url_without_fragment
@@ -26,7 +27,7 @@ class Scraper:
         self._visited[normalized_url] = True
 
     def _should_scrape_link(self, link):
-        return link.is_internal() and not self._url_is_visited(link.url) and not link.is_broken()
+        return link.is_internal() and not self._url_is_visited(link.url)
 
     def _scrape_page(self, page, depth=0):
         self._logger.info(f'Going through links at {page.url}...')
@@ -36,8 +37,14 @@ class Scraper:
         broken_links = []
         links = page.links
 
-        for link in links:
-            if link.is_broken():
+        loop = asyncio.get_event_loop()
+
+        futures = asyncio.gather(*[link.is_broken() for link in links], return_exceptions=True)
+
+        results = loop.run_until_complete(futures)
+
+        for link, is_broken in zip(links, results):
+            if is_broken:
                 broken_links.append(link)
 
         if broken_links:
@@ -50,7 +57,7 @@ class Scraper:
         if depth >= self._max_depth:
             return broken_links
 
-        for link in links:
+        for link, is_broken in zip(links, results):
             if self._should_scrape_link(link):
                 normalized_url = get_url_without_fragment(link.url)
 

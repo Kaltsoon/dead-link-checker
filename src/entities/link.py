@@ -39,13 +39,15 @@ class Link:
 
         return url.startswith(self.page.base_url)
 
-    def is_broken(self):
+    async def is_broken(self):
         url = self.url
 
         if url is None:
             return False
 
-        return url_is_broken(url)
+        is_broken = await url_is_broken(url)
+
+        return is_broken
 
     def __str__(self):
         return self.html

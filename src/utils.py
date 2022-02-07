@@ -1,8 +1,7 @@
-import requests
-from functools import lru_cache
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 from pyquery import PyQuery
-from urllib.parse import unquote
+import httpx
+from async_lru import alru_cache
 
 
 def get_url_without_fragment(url):
@@ -28,20 +27,23 @@ def get_base_url(url):
     return f'{uri.scheme}://{uri.netloc}'
 
 
-@lru_cache(maxsize=200)
-def get_url_response(url):
-    try:
-        return requests.get(url, timeout=10)
-    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-        return None
+@alru_cache(maxsize=200)
+async def get_url_response(url):
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.get(url, follow_redirects=True)
+
+            return response
+        except httpx.RequestError:
+            return None
 
 
-def url_is_broken(url):
+async def url_is_broken(url):
     normalized_url = get_url_without_fragment(url)
 
-    response = get_url_response(normalized_url)
+    response = await get_url_response(normalized_url)
 
-    if response is None or response.status_code != requests.codes.ok:
+    if response is None or response.status_code == 404 or response.status_code >= 500:
         return True
 
     fragment = get_url_fragment(url)

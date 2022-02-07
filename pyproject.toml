@@ -7,9 +7,10 @@ authors = ["Kalle Ilves <kalleilv@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.9"
 pyquery = "^1.4.3"
-requests = "^2.26.0"
 click = "^8.0.3"
 pychalk = "^2.0.1"
+httpx = "^0.22.0"
+async_lru = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 
