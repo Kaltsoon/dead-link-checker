@@ -1,5 +1,7 @@
 # ⚰️ Dead Link Checker
 
+[![Test](https://github.com/Kaltsoon/dead-link-checker/actions/workflows/test.yml/badge.svg)](https://github.com/Kaltsoon/dead-link-checker/actions/workflows/test.yml)
+
 A dead-simple way (pun intended) to recursively look for broken links on a web page. Link is considered broken if its URL responds with an HTTP error status code or sends no response. Link with an [URI fragment](https://en.wikipedia.org/wiki/URI_fragment) is considered broken if there's no target for the fragment on the corresponding page.
 
 ## Requirements
