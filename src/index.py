@@ -13,8 +13,12 @@ DATA_PATH = os.path.join(dirname, '..', 'data')
 @click.command()
 @click.option('--url', help='The URL of the page where the scraping starts')
 @click.option('--max-depth', default=10, help='Maximum depth of pages to scrape')
-@click.option('--report-file', default='report.json', help='File where the report will be written in JSON format')
-def scrape(url, max_depth, report_file):
+@click.option(
+    '--report-file',
+    default='report.json',
+    help='File where the report will be written in JSON format'
+)
+def scrape(url='', max_depth=10, report_file=None):
     logger = ConsoleLogger()
 
     report_path = Path(os.path.join(DATA_PATH, report_file)).resolve()
@@ -25,13 +29,11 @@ def scrape(url, max_depth, report_file):
         logger=logger
     )
 
-    reporter = FileReporter(report_path)
+    reporter = FileReporter(report_path, logger)
 
     logger.info(f'Starting the scraping at {url}...')
 
     reporter.produce_report(scraper)
-
-    logger.success(f'Scraping is done! Report can be found in {report_path}')
 
 
 if __name__ == '__main__':

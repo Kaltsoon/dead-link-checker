@@ -1,19 +1,24 @@
+from dataclasses import dataclass
+from typing import TYPE_CHECKING
 import re
 from pyquery import PyQuery
 from utils import url_is_broken
 
+if TYPE_CHECKING:
+    from entities.page import Page
 
+
+@dataclass
 class Link:
-    def __init__(self, html, page):
-        self.html = html
-        self.page = page
+    html: str
+    page: "Page"
 
     @property
-    def href(self):
+    def href(self) -> str:
         return PyQuery(self.html).attr('href')
 
     @property
-    def text(self):
+    def text(self) -> str:
         return PyQuery(self.html).text()
 
     @property

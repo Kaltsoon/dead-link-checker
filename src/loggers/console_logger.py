@@ -1,16 +1,20 @@
-import chalk
+from dataclasses import dataclass, field
+from rich.console import Console
 from loggers.logger import Logger
 
 
+@dataclass
 class ConsoleLogger(Logger):
-    def info(self, message):
-        print(message)
+    console: Console = field(default_factory=Console)
 
-    def success(self, message):
-        print(chalk.green(message))
+    def info(self, message: str):
+        self.console.log(message)
 
-    def warning(self, message):
-        print(chalk.yellow(message))
+    def success(self, message: str):
+        self.console.log(f'[green]{message}[/]')
 
-    def error(self, message):
-        print(chalk.red(message))
+    def warning(self, message: str):
+        self.console.log(f'[yellow]{message}[/]')
+
+    def error(self, message: str):
+        self.console.log(f'[red]{message}[/]')

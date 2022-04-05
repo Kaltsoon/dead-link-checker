@@ -2,14 +2,14 @@ from loggers.logger import Logger
 
 
 class NopLogger(Logger):
-    def info(self, message):
+    def info(self, message: str):
         pass
 
-    def success(self, message):
+    def success(self, message: str):
         pass
 
-    def warning(self, message):
+    def warning(self, message: str):
         pass
 
-    def error(self, message):
+    def error(self, message: str):
         pass

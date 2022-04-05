@@ -8,12 +8,17 @@ authors = ["Kalle Ilves <kalleilv@gmail.com>"]
 python = "^3.9"
 pyquery = "^1.4.3"
 click = "^8.0.3"
-pychalk = "^2.0.1"
 httpx = "^0.22.0"
 async_lru = "^1.0.2"
+rich = "^12.1.0"
 
 [tool.poetry.dev-dependencies]
+pylint = "^2.13.4"
+mypy = "^0.942"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+ignore_missing_imports = "True"

@@ -1,6 +1,10 @@
+from dataclasses import dataclass, field
+from typing import List
 import asyncio
+from loggers.logger import Logger
 from loggers.nop_logger import NopLogger
 from entities.page import Page
+from entities.link import Link
 from utils import get_url_without_fragment
 
 
@@ -10,17 +14,21 @@ async def get_broken_status(links):
     return results
 
 
+@dataclass
 class Scraper:
-    def __init__(self, url, logger=NopLogger(), max_depth=10):
-        self.url = url
+    url: str
+    max_depth: int = field(default=10)
+    logger: Logger = field(default_factory=NopLogger)
+
+    def __post_init__(self):
         self._visited = {}
-        self._max_depth = max_depth
-        self._logger = logger
 
     def get_broken_links(self):
         normalized_url = get_url_without_fragment(self.url)
 
-        return self._scrape_page(Page(normalized_url))
+        links: List[Link] = self._scrape_page(Page(normalized_url))
+
+        return links
 
     def _url_is_visited(self, url):
         normalized_url = get_url_without_fragment(url)
@@ -36,7 +44,7 @@ class Scraper:
         return link.is_internal() and not self._url_is_visited(link.url)
 
     def _scrape_page(self, page, depth=0):
-        self._logger.info(f'Going through links at {page.url}...')
+        self.logger.info(f'Going through links at {page.url}...')
 
         self._set_url_visited(page.url)
 
@@ -50,13 +58,13 @@ class Scraper:
                 broken_links.append(link)
 
         if broken_links:
-            self._logger.warning(
+            self.logger.warning(
                 f'Found {len(broken_links)} broken links at {page.url}'
             )
         else:
-            self._logger.success(f'Found no broken links at {page.url}')
+            self.logger.success(f'Found no broken links at {page.url}')
 
-        if depth >= self._max_depth:
+        if depth >= self.max_depth:
             return broken_links
 
         for link, is_broken in zip(links, results):
