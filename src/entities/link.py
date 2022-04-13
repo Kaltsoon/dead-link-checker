@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 import re
 from pyquery import PyQuery
 from utils import url_is_broken
@@ -22,7 +22,7 @@ class Link:
         return PyQuery(self.html).text()
 
     @property
-    def url(self):
+    def url(self) -> Optional[str]:
         href = self.href
 
         if href is None:
@@ -36,7 +36,7 @@ class Link:
 
         return None
 
-    def is_internal(self):
+    def is_internal(self) -> bool:
         url = self.url
 
         if url is None:
@@ -44,7 +44,7 @@ class Link:
 
         return url.startswith(self.page.base_url)
 
-    async def is_broken(self):
+    async def is_broken(self) -> bool:
         url = self.url
 
         if url is None:

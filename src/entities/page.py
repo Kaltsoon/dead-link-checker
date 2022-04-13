@@ -16,16 +16,16 @@ class Page:
             self._query = None
 
     @property
-    def base_url(self):
+    def base_url(self) -> str:
         return get_base_url(self.url)
 
     @property
-    def links(self):
+    def links(self) -> List[Link]:
         if self._query is None:
             return []
 
         anchors = self._query('a')
-        links: List[Link] = []
+        links = []
 
         for anchor in anchors:
             anchor_html = PyQuery(anchor).outerHtml() #pylint: disable=no-member

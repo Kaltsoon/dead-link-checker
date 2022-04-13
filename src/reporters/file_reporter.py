@@ -12,7 +12,7 @@ class FileReporter(Reporter):
     path: str
     logger: Logger = field(default_factory=NopLogger)
 
-    def produce_report(self, scraper: Scraper):
+    def produce_report(self, scraper: Scraper) -> None:
         broken_links = scraper.get_broken_links()
 
         link_dict: Dict[str, List[str]] = {}

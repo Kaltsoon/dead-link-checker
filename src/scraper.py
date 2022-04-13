@@ -8,7 +8,7 @@ from entities.link import Link
 from utils import get_url_without_fragment
 
 
-async def get_broken_status(links):
+async def get_broken_status(links: List[Link]) -> List[bool]:
     results = await asyncio.gather(*[link.is_broken() for link in links], return_exceptions=True)
 
     return results
@@ -23,27 +23,27 @@ class Scraper:
     def __post_init__(self):
         self._visited = {}
 
-    def get_broken_links(self):
+    def get_broken_links(self) -> List[Link]:
         normalized_url = get_url_without_fragment(self.url)
 
-        links: List[Link] = self._scrape_page(Page(normalized_url))
+        links = self._scrape_page(Page(normalized_url))
 
         return links
 
-    def _url_is_visited(self, url):
+    def _url_is_visited(self, url) -> bool:
         normalized_url = get_url_without_fragment(url)
 
         return self._visited.get(normalized_url) is not None
 
-    def _set_url_visited(self, url):
+    def _set_url_visited(self, url) -> None:
         normalized_url = get_url_without_fragment(url)
 
         self._visited[normalized_url] = True
 
-    def _should_scrape_link(self, link):
+    def _should_scrape_link(self, link) -> bool:
         return link.is_internal() and not self._url_is_visited(link.url)
 
-    def _scrape_page(self, page, depth=0):
+    def _scrape_page(self, page, depth=0) -> List[Link]:
         self.logger.info(f'Going through links at {page.url}...')
 
         self._set_url_visited(page.url)

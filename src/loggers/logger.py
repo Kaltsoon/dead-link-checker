@@ -1,12 +1,12 @@
 class Logger:
-    def info(self, message: str):
+    def info(self, message: str) -> None:
         raise NotImplementedError()
 
-    def success(self, message: str):
+    def success(self, message: str) -> None:
         raise NotImplementedError()
 
-    def warning(self, message: str):
+    def warning(self, message: str) -> None:
         raise NotImplementedError()
 
-    def error(self, message: str):
+    def error(self, message: str) -> None:
         raise NotImplementedError()

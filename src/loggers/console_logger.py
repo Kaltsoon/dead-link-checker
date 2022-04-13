@@ -7,14 +7,14 @@ from loggers.logger import Logger
 class ConsoleLogger(Logger):
     console: Console = field(default_factory=Console)
 
-    def info(self, message: str):
+    def info(self, message: str) -> None:
         self.console.log(message)
 
-    def success(self, message: str):
+    def success(self, message: str) -> None:
         self.console.log(f'[green]{message}[/]')
 
-    def warning(self, message: str):
+    def warning(self, message: str) -> None:
         self.console.log(f'[yellow]{message}[/]')
 
-    def error(self, message: str):
+    def error(self, message: str) -> None:
         self.console.log(f'[red]{message}[/]')

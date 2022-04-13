@@ -1,20 +1,21 @@
 from urllib.parse import urlparse, unquote
+from typing import Optional
 from pyquery import PyQuery
 import httpx
 from async_lru import alru_cache
 
 
-def get_url_without_fragment(url: str):
+def get_url_without_fragment(url: str) -> str:
     return url.split('#')[0]
 
 
-def get_url_fragment(url: str):
+def get_url_fragment(url: str) -> Optional[str]:
     parts = url.split('#')
 
     return parts[1] if len(parts) > 1 else None
 
 
-def html_has_fragment_target(html: str, fragment: str):
+def html_has_fragment_target(html: str, fragment: str) -> bool:
     query = PyQuery(html)
     normalized_id = unquote(fragment)
 
@@ -24,14 +25,14 @@ def html_has_fragment_target(html: str, fragment: str):
     return len(query(selector)) > 0
 
 
-def get_base_url(url: str):
+def get_base_url(url: str) -> str:
     uri = urlparse(url)
 
     return f'{uri.scheme}://{uri.netloc}'
 
 
 @alru_cache(maxsize=200)
-async def get_url_response(url: str):
+async def get_url_response(url: str) -> Optional[httpx.Response]:
     async with httpx.AsyncClient() as client:
         try:
             response = await client.get(url, follow_redirects=True)
@@ -41,7 +42,7 @@ async def get_url_response(url: str):
             return None
 
 
-async def url_is_broken(url: str):
+async def url_is_broken(url: str) -> bool:
     normalized_url = get_url_without_fragment(url)
 
     response = await get_url_response(normalized_url)
