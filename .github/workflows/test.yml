@@ -24,3 +24,22 @@ jobs:
         run: poetry run pylint src
       - name: Run type checks
         run: poetry run mypy src/index.py
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.repository == 'Kaltsoon/dead-link-checker' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Login
+        uses: docker/login-action@v1
+        with:
+          username: ${{secrets.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: kaltsoon/dead-link-checker
