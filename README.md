@@ -1,4 +1,4 @@
-# ⚰️ Dead Link Checker
+# 💀 Dead Link Checker
 
 [![Test](https://github.com/Kaltsoon/dead-link-checker/actions/workflows/test.yml/badge.svg)](https://github.com/Kaltsoon/dead-link-checker/actions/workflows/test.yml)
 
