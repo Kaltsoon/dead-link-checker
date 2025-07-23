@@ -6,7 +6,7 @@ A dead-simple way (pun intended) to recursively look for broken links on a web p
 
 ## Requirements
 
-Python version 3.9 or later.
+Docker or Python version 3.9 or later.
 
 ## How to use?
 
