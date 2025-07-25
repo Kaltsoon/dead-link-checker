@@ -19,3 +19,7 @@ Without Docker:
 1. Create a virtual environmennt by running `python3 -m venv env` and activate it by running `source env/bin/activate`.
 2. Install dependencies inside the virtual environment by running `pip3 install -r requirements.txt`.
 3. Inside the virtual environment run `python3 src/index.py --url <url>` with the desired URL. Once the script is finished, it will write a report to the `data/report.json` file which contains broken links per URL. Note that the script will only go through the internal links to avoid things getting out of hand. Run `python3 src/index.py --help` to see available options.
+
+## License
+
+[MIT](./LICENSE)
